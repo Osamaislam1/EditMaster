@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced WYSIWYG Editor</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+   
+</head>
+
+
+<body>
+    <textarea id="myEditor" class="wysiwyg" rows="5" cols="5">Initial content here...</textarea>
+
+    <script src="wysiwyg-editor.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the WYSIWYG editor
+            new WYSIWYGEditor('myEditor');
+        });
+    </script>
+</body>
+</html>
