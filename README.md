@@ -57,11 +57,10 @@ Commit Your Changes: git commit -m 'Add some AmazingFeature'
 Push to the Branch: git push origin feature/AmazingFeature
 Open a Pull Request
 Here's the whole content in markdown format:
-markdownCopy# EditMaster
+markdown# EditMaster
 
 EditMaster is an advanced WYSIWYG (What You See Is What You Get) HTML editor that offers a rich text editing experience. With a wide range of features, it provides powerful tools for formatting text, managing styles, and previewing HTML source code. This open-source project welcomes contributions from the community.
 
-![EditMaster Screenshot](path/to/screenshot.png)
 
 ## 🚀 Features
 
@@ -83,7 +82,7 @@ Get started with EditMaster in just a few steps:
    git clone https://github.com/Osamaislam1/EditMaster.git
 
 Navigate to the Project Directory
-bashCopycd EditMaster
+cd EditMaster
 
 Open the Project
 Open index.html in your web browser to see EditMaster in action.
@@ -108,6 +107,16 @@ Source Code View: Seamlessly switch between WYSIWYG and source code view
 🤝 Contributing
 We welcome contributions to EditMaster! Here's how you can contribute:
 
+Fork the Repository on GitHub
+Create a New Branch
+git checkout -b feature/AmazingFeature
+Make Your Changes and Test Them Locally
+Commit Your Changes
+
+git commit -m 'Add some AmazingFeature'
+Push to the Branch
+git push origin feature/AmazingFeature
+Open a Pull Request
 License
 EditMaster is licensed under the MIT License. See the LICENSE file for details.
 
@@ -120,7 +129,6 @@ Linkedin: linkedin.com/in/osama-islam
 Thank you for using EditMaster! We hope you find it useful and easy to integrate into your projects.
 
 📞 Contact
-Osama Islam - @YourTwitter
 Project Link: https://github.com/Osamaislam1/EditMaster
 
 Thank you for using EditMaster! We hope you find it useful and easy to integrate into your projects. Your feedback and contributions are always welcome!
