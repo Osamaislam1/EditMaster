@@ -91,12 +91,19 @@ Open index.html in your web browser to see EditMaster in action.
 
 Initialize the Editor
 Include the wysiwyg-editor.js file in your HTML:
-htmlCopy<script src="wysiwyg-editor.js" defer></script>
+<script src="wysiwyg-editor.js" defer></script>
 
 Add a Textarea
 Add a textarea with the class wysiwyg to your HTML:
-htmlCopy<textarea id="myEditor" class="wysiwyg" rows="10" cols="80">Initial content here...</textarea>
+<textarea id="myEditor" class="wysiwyg" rows="10" cols="80">Initial content here...</textarea>
+ <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the WYSIWYG editor
+            new WYSIWYGEditor('myEditor');
+        });
+    </script>
 The editor will automatically initialize for all textareas with the class wysiwyg.
+
 
 🔧 Features Overview
 
