@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced WYSIWYG Editor</title>
-    <!-- <link rel="stylesheet" href="styles.css"> -->
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-
-
 <body>
     <textarea id="myEditor" class="wysiwyg" rows="5" cols="5">Initial content here...</textarea>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPDF/2.3.1/jspdf.umd.min.js"></script>
     <script src="wysiwyg-editor.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize the WYSIWYG editor
             new WYSIWYGEditor('myEditor');
         });
     </script>

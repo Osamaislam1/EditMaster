@@ -10,7 +10,6 @@ class WYSIWYGEditor {
         this.textarea.style.display = 'none';
         this.textarea.insertAdjacentElement('afterend', this.editorContainer);
 
-        // Store the instance in a global variable
         window.wysiwygEditorInstance = this;
 
         this.init();
@@ -20,119 +19,13 @@ class WYSIWYGEditor {
         const container = document.createElement('div');
         container.className = 'editor-container';
 
-        // Add CSS styles for the editor
         const style = document.createElement('style');
-        style.textContent = `
-            /* Basic styling for the editor container */
-            .editor-container {
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
-                position: relative; /* Ensure the resizable handle is positioned correctly */
-            }
-
-            .toolbar {
-                display: flex;
-                flex-wrap: wrap;
-                margin-bottom: 10px;
-                padding: 5px;
-                border-bottom: 1px solid #ccc;
-                background-color: #f9f9f9;
-            }
-            .toolbar button, .toolbar select, .toolbar input {
-                margin: 2px;
-                padding: 5px;
-                font-size: 14px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                background-color: #fff;
-                cursor: pointer;
-            }
-            .toolbar button:hover, .toolbar select:hover, .toolbar input:hover {
-                background-color: #f0f0f0;
-            }
-            .tab-container {
-                display: flex;
-                border-bottom: 1px solid #ddd;
-            }
-            .tab {
-                padding: 10px;
-                cursor: pointer;
-                background: #f0f0f0;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                margin-right: 5px;
-                flex: 1;
-                text-align: center;
-            }
-            .tab.active {
-                background: #ddd;
-                font-weight: bold;
-            }
-            .editor, .source-editor {
-                border: 1px solid #ccc;
-                margin-top: 5px;
-                resize: both; /* Allow resizing both horizontally and vertically */
-                overflow: auto; /* Ensure content is scrollable if it overflows */
-                height: 300px; /* Initial height, can be changed based on preference */
-                box-sizing: border-box;
-            }
-            .editor {
-                display: block;
-                min-width: 300px; /* Minimum width to prevent too small resizing */
-                min-height: 200px; /* Minimum height to prevent too small resizing */
-            }
-            .source-editor {
-                display: none;
-                font-family: monospace;
-                white-space: pre;
-                overflow: auto;
-                height: calc(100vh - 75px); /* Adjust based on toolbar and tab height */
-                box-sizing: border-box;
-            }
-        `;
+        style.textContent = this.getStyles();
         container.appendChild(style);
 
         const toolbar = document.createElement('div');
         toolbar.className = 'toolbar';
-        toolbar.innerHTML = `
-            <button onclick="window.wysiwygEditorInstance.execCmd('bold')"><b>B</b></button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('italic')"><i>I</i></button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('underline')"><u>U</u></button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('createLink')">Link</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('insertImage')">Image</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('insertOrderedList')">OL</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('insertUnorderedList')">UL</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('justifyLeft')">Left</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('justifyCenter')">Center</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('justifyRight')">Right</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('justifyLeft')">LTR</button>
-            <button onclick="window.wysiwygEditorInstance.execCmd('justifyRight')">RTL</button>
-            <select id="headerSelect" onchange="window.wysiwygEditorInstance.execCmd('formatBlock', this.value)">
-                <option value="">Header</option>
-                <option value="H1">H1</option>
-                <option value="H2">H2</option>
-                <option value="H3">H3</option>
-                <option value="H4">H4</option>
-                <option value="H5">H5</option>
-                <option value="H6">H6</option>
-                <option value="P">Paragraph</option>
-                <option value="BLOCKQUOTE">Quote</option>
-            </select>
-            <select id="fontSelect" onchange="window.wysiwygEditorInstance.execCmd('fontName', this.value)">
-                <option value="">Font</option>
-            </select>
-            <select id="fontSizeSelect" onchange="window.wysiwygEditorInstance.updateFontSize(this.value)">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <input id="customFontSize" type="number" min="2" max="72" placeholder="Custom size" oninput="window.wysiwygEditorInstance.applyCustomFontSize(this.value)" style="width: 60px;">
-            <button onclick="window.wysiwygEditorInstance.changeFontSize(-1)">-</button>
-            <button onclick="window.wysiwygEditorInstance.changeFontSize(1)">+</button>
-            <input type="color" onchange="window.wysiwygEditorInstance.execCmd('foreColor', this.value)" title="Text Color">
-            <input type="color" onchange="window.wysiwygEditorInstance.execCmd('hiliteColor', this.value)" title="Background Color">
-            <button onclick="window.wysiwygEditorInstance.showEditor()">WYSIWYG</button>
-            <button onclick="window.wysiwygEditorInstance.showSource()">Source</button>
-        `;
+        toolbar.innerHTML = this.getToolbarButtons();
 
         const tabContainer = document.createElement('div');
         tabContainer.className = 'tab-container';
@@ -158,6 +51,126 @@ class WYSIWYGEditor {
         return container;
     }
 
+    getStyles() {
+        return `
+            .editor-container {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                position: relative;
+                font-family: Arial, sans-serif;
+            }
+            .toolbar {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+                background-color: #f4f4f4;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .toolbar button, .toolbar select, .toolbar input {
+                margin: 2px;
+                padding: 8px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                cursor: pointer;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+            .toolbar button:hover, .toolbar select:hover, .toolbar input:hover {
+                background-color: #e9e9e9;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .tab-container {
+                display: flex;
+                border-bottom: 1px solid #ddd;
+                margin-bottom: 10px;
+            }
+            .tab {
+                padding: 10px 20px;
+                cursor: pointer;
+                background: #f0f0f0;
+                border: 1px solid #ddd;
+                border-radius: 4px 4px 0 0;
+                margin-right: 5px;
+                flex: 1;
+                text-align: center;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+            .tab.active {
+                background: #ddd;
+                font-weight: bold;
+                box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            }
+            .tab:hover {
+                background-color: #e9e9e9;
+            }
+            .editor, .source-editor {
+                border: 1px solid #ccc;
+                margin-top: 5px;
+                resize: both;
+                overflow: auto;
+                height: 300px;
+                box-sizing: border-box;
+                border-radius: 4px;
+                padding: 10px;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .editor {
+                display: block;
+                min-width: 300px;
+                min-height: 200px;
+                font-size: 12px;
+            }
+            .source-editor {
+                display: none;
+                font-family: monospace;
+                white-space: pre;
+                height: calc(100vh - 100px);
+                box-sizing: border-box;
+            }
+        `;
+    }
+
+    getToolbarButtons() {
+        return `
+            <button title="Bold" onclick="window.wysiwygEditorInstance.execCmd('bold')"><i class="fas fa-bold"></i></button>
+            <button title="Italic" onclick="window.wysiwygEditorInstance.execCmd('italic')"><i class="fas fa-italic"></i></button>
+            <button title="Underline" onclick="window.wysiwygEditorInstance.execCmd('underline')"><i class="fas fa-underline"></i></button>
+            <button title="Create Link" onclick="window.wysiwygEditorInstance.createLink()"><i class="fas fa-link"></i></button>
+            <button title="Insert Image" onclick="window.wysiwygEditorInstance.insertImage()"><i class="fas fa-image"></i></button>
+            <button title="Ordered List" onclick="window.wysiwygEditorInstance.execCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+            <button title="Unordered List" onclick="window.wysiwygEditorInstance.execCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+            <button title="Justify Left" onclick="window.wysiwygEditorInstance.execCmd('justifyLeft')"><i class="fas fa-align-left"></i></button>
+            <button title="Justify Center" onclick="window.wysiwygEditorInstance.execCmd('justifyCenter')"><i class="fas fa-align-center"></i></button>
+            <button title="Justify Right" onclick="window.wysiwygEditorInstance.execCmd('justifyRight')"><i class="fas fa-align-right"></i></button>
+            <select id="headerSelect" onchange="window.wysiwygEditorInstance.execCmd('formatBlock', this.value)">
+                <option value="P">Paragraph</option>
+                <option value="H1">H1</option>
+                <option value="H2">H2</option>
+                <option value="H3">H3</option>
+                <option value="H4">H4</option>
+                <option value="H5">H5</option>
+                <option value="H6">H6</option>
+                <option value="BLOCKQUOTE">Quote</option>
+            </select>
+            <select id="fontSelect" onchange="window.wysiwygEditorInstance.execCmd('fontName', this.value)">
+                <option value="">Font</option>
+            </select>
+            <select id="fontSizeSelect" onchange="window.wysiwygEditorInstance.updateFontSize(this.value)">
+            </select>
+            <input type="color" onchange="window.wysiwygEditorInstance.execCmd('foreColor', this.value)" title="Text Color">
+            <input type="color" onchange="window.wysiwygEditorInstance.execCmd('hiliteColor', this.value)" title="Background Color">
+            <button title="Show WYSIWYG Editor" onclick="window.wysiwygEditorInstance.showEditor()"><i class="fas fa-eye"></i></button>
+            <button title="Show Source Code" onclick="window.wysiwygEditorInstance.showSource()"><i class="fas fa-code"></i></button>
+            <button title="Export as Word" onclick="window.wysiwygEditorInstance.exportWord()"><i class="fas fa-file-word"></i></button>
+            <button title="Export as PDF" onclick="window.wysiwygEditorInstance.exportPDF()"><i class="fas fa-file-pdf"></i></button>
+        `;
+    }
+
     init() {
         this.iframe = document.getElementById('editor');
         this.doc = this.iframe.contentDocument || this.iframe.contentWindow.document;
@@ -166,7 +179,7 @@ class WYSIWYGEditor {
         this.sourceTab = document.getElementById('sourceTab');
 
         this.doc.open();
-        this.doc.write('<html><head><style>body { font-family: Arial, sans-serif; font-size: 11px; margin: 10px; }</style></head><body contenteditable="true"></body></html>');
+        this.doc.write('<html><head><style>body { font-family: Arial, sans-serif; font-size: 12px; margin: 10px; }</style></head><body contenteditable="true"></body></html>');
         this.doc.close();
 
         this.populateFontOptions();
@@ -177,12 +190,13 @@ class WYSIWYGEditor {
         });
 
         this.showEditor();
+        this.execCmd('formatBlock', 'P'); // Set default format to paragraph
+        // this.execCmd('fontSize', '3'); // Set default font size to 12
+        this.doc.body.style.fontSize = '12px';
     }
 
     populateFontOptions() {
-        const fonts = [
-            'Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Comic Sans MS'
-        ];
+        const fonts = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Comic Sans MS'];
         const fontSelect = document.getElementById('fontSelect');
         fonts.forEach(font => {
             const option = document.createElement('option');
@@ -198,49 +212,66 @@ class WYSIWYGEditor {
         sizes.forEach(size => {
             const option = document.createElement('option');
             option.value = size;
-            option.textContent = size;
+            option.textContent = size + 'px';
             fontSizeSelect.appendChild(option);
         });
+        fontSizeSelect.value = '12'; // Set default font size to 12
     }
 
     execCmd(command, value) {
         this.doc.execCommand(command, false, value);
     }
 
+    createLink() {
+        const url = prompt("Enter the URL");
+        if (url) {
+            this.execCmd('createLink', url);
+        }
+    }
+
+    insertImage() {
+        const url = prompt("Enter the image URL");
+        if (url) {
+            this.execCmd('insertImage', url);
+        }
+    }
+
     updateFontSize(size) {
         if (size) {
-            this.execCmd('fontSize', size);
+            this.doc.body.style.fontSize = size + 'px';
         }
     }
-
-    applyCustomFontSize(size) {
-        if (size) {
-            this.execCmd('fontSize', size);
-        }
-    }
-
-    changeFontSize(step) {
-        const fontSizeSelect = document.getElementById('fontSizeSelect');
-        let currentSize = parseInt(fontSizeSelect.value, 10);
-        if (!currentSize) return;
-
-        const newSize = Math.max(2, Math.min(72, currentSize + step));
-        fontSizeSelect.value = newSize;
-        this.updateFontSize(newSize);
-    }
-
     showEditor() {
-        document.querySelector('.editor').style.display = 'block';
-        document.querySelector('.source-editor').style.display = 'none';
-        document.getElementById('wysiwygTab').classList.add('active');
-        document.getElementById('sourceTab').classList.remove('active');
+        this.iframe.style.display = 'block';
+        this.sourceEditor.style.display = 'none';
+        this.wysiwygTab.classList.add('active');
+        this.sourceTab.classList.remove('active');
     }
 
     showSource() {
-        document.querySelector('.editor').style.display = 'none';
-        document.querySelector('.source-editor').style.display = 'block';
-        document.getElementById('sourceEditor').value = this.doc.body.innerHTML;
-        document.getElementById('sourceTab').classList.add('active');
-        document.getElementById('wysiwygTab').classList.remove('active');
+        this.iframe.style.display = 'none';
+        this.sourceEditor.style.display = 'block';
+        this.sourceEditor.value = this.doc.body.innerHTML;
+        this.sourceTab.classList.add('active');
+        this.wysiwygTab.classList.remove('active');
+    }
+
+    exportWord() {
+        const blob = new Blob([this.doc.body.innerHTML], { type: 'application/msword' });
+        saveAs(blob, 'document.doc');
+    }
+
+    exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.html(this.doc.body, {
+            callback: function (pdf) {
+                pdf.save('document.pdf');
+            }
+        });
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    new WYSIWYGEditor('myEditor');
+});
